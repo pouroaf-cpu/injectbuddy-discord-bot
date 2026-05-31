@@ -1,61 +1,206 @@
+# InjectBuddy Discord server configuration
+# Synced automatically via GitHub Actions on push.
+
 server:
   id: 1509373112855040151
 
+# ---------- ROLES ----------
+
 roles:
-  - name: Founding Member
-    color: "#FFD700"
+  - name: Admin
+    color: "#ef4444"
+    hoist: true
+    mentionable: false
+
+  - name: Mod
+    color: "#f59e0b"
     hoist: true
     mentionable: true
 
-  - name: GLP-1
-    color: "#00D4AA"
-    mentionable: true
+  - name: Verified
+    color: "#14b8a6"
+    hoist: false
+    mentionable: false
 
-  - name: TRT
-    color: "#FF6B35"
-    mentionable: true
 
-  - name: Peptides
-    color: "#9B59B6"
-    mentionable: true
+# ---------- CHANNELS ----------
 
 categories:
-  - name: Info
+
+  - name: "📋 START HERE"
     position: 0
     channels:
       - name: welcome
         type: text
-        topic: "Welcome to InjectBuddy — start here"
-
-      - name: announcements
-        type: text
-        topic: "Updates from the InjectBuddy team"
+        topic: "Welcome to InjectBuddy. Read the rules, then head to #verify to unlock the server."
         permissions:
           "@everyone":
+            view_channel: true
+            read_message_history: true
             send_messages: false
 
-  - name: Product
+      - name: rules
+        type: text
+        topic: "Server rules. Breaking them gets you a timeout or a boot."
+        permissions:
+          "@everyone":
+            view_channel: true
+            read_message_history: true
+            send_messages: false
+
+      - name: verify
+        type: text
+        topic: "Click the verify button to link your InjectBuddy account and unlock the server."
+        permissions:
+          "@everyone":
+            view_channel: true
+            read_message_history: true
+            send_messages: false
+
+  - name: "💬 COMMUNITY"
     position: 1
     channels:
-      - name: calculator-help
+      - name: general
         type: text
-        topic: "Questions about using the calculators"
+        topic: "General chat. Keep it roughly on-topic."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
 
-      - name: bugs-and-feedback
+      - name: introductions
         type: text
-        topic: "Bug reports and feature requests"
+        topic: "Quick intro — where you're from, what you're working on."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
 
-  - name: Community
+      - name: wins
+        type: text
+        topic: "Progress photos, bloodwork wins, PRs. Celebrate the work."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
+
+  - name: "🧪 PROTOCOLS"
     position: 2
     channels:
-      - name: glp1
+      - name: trt
         type: text
-        topic: "Semaglutide and tirzepatide discussion"
+        topic: "Testosterone replacement therapy — protocols, dosing, bloodwork."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
 
-      - name: trt-peptides
+      - name: peptides
         type: text
-        topic: "TRT protocols and peptide stacks"
+        topic: "BPC-157, TB-500, GHRPs — reconstitution, dosing, results."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
 
-      - name: general-chat
+      - name: glp-1
         type: text
-        topic: "Off-topic chat"
+        topic: "Semaglutide, tirzepatide, retatrutide — dosing and experiences."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
+
+  - name: "🛠 INJECTBUDDY"
+    position: 3
+    channels:
+      - name: announcements
+        type: text
+        topic: "Site updates, new calculators, feature drops. Read-only for members."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: false
+            read_message_history: true
+          Mod:
+            send_messages: true
+          Admin:
+            send_messages: true
+
+      - name: site-feedback
+        type: text
+        topic: "Calculator suggestions, bug reports, feature requests."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Verified:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+            attach_files: true
+            embed_links: true
+
+  - name: "🔒 STAFF"
+    position: 4
+    channels:
+      - name: mod-chat
+        type: text
+        topic: "Staff-only chat."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Mod:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+          Admin:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+
+      - name: mod-log
+        type: text
+        topic: "Bot logs: joins, verifications, role changes."
+        permissions:
+          "@everyone":
+            view_channel: false
+          Mod:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
+          Admin:
+            view_channel: true
+            send_messages: true
+            read_message_history: true
