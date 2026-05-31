@@ -1,5 +1,5 @@
 server:
-  id: PLACEHOLDER_SERVER_ID   # Replace with your Discord server (guild) ID
+  id: 1509373112855040151
 
 roles:
   - name: Founding Member
