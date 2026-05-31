@@ -133,3 +133,8 @@ async def _modify_channel(action: DiffAction, guild: discord.Guild) -> None:
         kwargs["topic"] = cfg.topic or ""
 
     await channel.edit(**kwargs)
+
+
+async def _delete_channel(action: DiffAction, guild: discord.Guild) -> None:
+    channel = action.payload["channel"]
+    await channel.delete(reason=_REASON)
