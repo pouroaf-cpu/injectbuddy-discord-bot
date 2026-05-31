@@ -1,0 +1,61 @@
+server:
+  id: PLACEHOLDER_SERVER_ID   # Replace with your Discord server (guild) ID
+
+roles:
+  - name: Founding Member
+    color: "#FFD700"
+    hoist: true
+    mentionable: true
+
+  - name: GLP-1
+    color: "#00D4AA"
+    mentionable: true
+
+  - name: TRT
+    color: "#FF6B35"
+    mentionable: true
+
+  - name: Peptides
+    color: "#9B59B6"
+    mentionable: true
+
+categories:
+  - name: Info
+    position: 0
+    channels:
+      - name: welcome
+        type: text
+        topic: "Welcome to InjectBuddy — start here"
+
+      - name: announcements
+        type: text
+        topic: "Updates from the InjectBuddy team"
+        permissions:
+          "@everyone":
+            send_messages: false
+
+  - name: Product
+    position: 1
+    channels:
+      - name: calculator-help
+        type: text
+        topic: "Questions about using the calculators"
+
+      - name: bugs-and-feedback
+        type: text
+        topic: "Bug reports and feature requests"
+
+  - name: Community
+    position: 2
+    channels:
+      - name: glp1
+        type: text
+        topic: "Semaglutide and tirzepatide discussion"
+
+      - name: trt-peptides
+        type: text
+        topic: "TRT protocols and peptide stacks"
+
+      - name: general-chat
+        type: text
+        topic: "Off-topic chat"
