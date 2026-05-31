@@ -12,6 +12,17 @@ import discord
 from aiohttp import web
 from dotenv import load_dotenv
 
+from .config import load_config
+from .differ import (
+    compute_role_diff,
+    compute_structure_diff,
+    SYMBOL_CREATE,
+    SYMBOL_MODIFY,
+    SYMBOL_DELETE,
+    SYMBOL_SAME,
+)
+from .actions import apply_action
+
 
 load_dotenv()
 
@@ -90,7 +101,50 @@ class VerificationBot(discord.Client):
         if guild is None:
             log.error("Guild %s not found", GUILD_ID)
             return
+        await self._run_yaml_sync(guild)
         await self._ensure_verify_pin(guild)
+
+    async def _run_yaml_sync(self, guild: discord.Guild) -> None:
+        config_path = Path(os.environ.get("CONFIG_PATH", "config/server.yaml"))
+        if not config_path.exists():
+            log.warning("server.yaml not found at %s — skipping sync", config_path)
+            return
+        try:
+            config = load_config(config_path)
+        except ValueError as exc:
+            log.error("Config error: %s", exc)
+            return
+
+        log.info("YAML sync starting on '%s'", guild.name)
+        await guild.fetch_channels()
+
+        counts = {SYMBOL_CREATE: 0, SYMBOL_MODIFY: 0, SYMBOL_DELETE: 0, SYMBOL_SAME: 0}
+
+        for action in compute_role_diff(guild, config, self.user.id, allow_delete=False):
+            if not action.skipped:
+                counts[action.symbol] = counts.get(action.symbol, 0) + 1
+                await apply_action(action, guild)
+                log.info("%s [role] %s", action.symbol, action.description)
+
+        await guild.fetch_roles()
+
+        for action in compute_structure_diff(guild, config, allow_delete=False):
+            if not action.skipped:
+                counts[action.symbol] = counts.get(action.symbol, 0) + 1
+                await apply_action(action, guild)
+                log.info("%s [channel] %s", action.symbol, action.description)
+
+        summary = (
+            f"YAML sync complete — "
+            f"+{counts[SYMBOL_CREATE]} created  "
+            f"~{counts[SYMBOL_MODIFY]} updated  "
+            f"={counts[SYMBOL_SAME]} unchanged"
+        )
+        log.info(summary)
+
+        mod_log = discord.utils.get(guild.text_channels, name="mod-log")
+        if mod_log:
+            await mod_log.send(f"🔧 {summary}")
 
     # ── events ─────────────────────────────────────────────────────────────
 
