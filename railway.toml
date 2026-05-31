@@ -1,0 +1,8 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "python -m src.bot"
+healthcheckPath = "/healthz"
+healthcheckTimeout = 10
+restartPolicyType = "ON_FAILURE"
