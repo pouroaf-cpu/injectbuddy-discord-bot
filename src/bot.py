@@ -42,7 +42,9 @@ WEBHOOK_SECRET    = os.environ.get("BOT_WEBHOOK_SECRET", "").strip()
 PORT              = int(os.environ.get("PORT", "8080"))
 DB_PATH           = Path(os.environ.get("DB_PATH", "data/mappings.db"))
 
+WELCOME_CHANNEL   = "welcome"
 VERIFY_CHANNEL    = "verify"
+RULES_CHANNEL     = "rules"
 GENERAL_CHANNEL   = "general"
 MEMBER_ROLE       = "Member"
 VERIFIED_ROLE     = "Verified"
@@ -102,7 +104,10 @@ class VerificationBot(discord.Client):
             log.error("Guild %s not found", GUILD_ID)
             return
         await self._run_yaml_sync(guild)
-        await self._ensure_verify_pin(guild)
+        await self._ensure_welcome_pin(guild)
+        # Verification is currently disabled — access is open to everyone.
+        # Re-enable by uncommenting the line below (and re-gating channels in server.yaml).
+        # await self._ensure_verify_pin(guild)
 
     async def _run_yaml_sync(self, guild: discord.Guild) -> None:
         config_path = Path(os.environ.get("CONFIG_PATH", "config/server.yaml"))
@@ -195,6 +200,37 @@ class VerificationBot(discord.Client):
             )
 
         return True, "ok"
+
+    # ── #welcome pin ─────────────────────────────────────────────────────────
+
+    async def _ensure_welcome_pin(self, guild: discord.Guild) -> None:
+        channel = discord.utils.get(guild.text_channels, name=WELCOME_CHANNEL)
+        if channel is None:
+            log.warning("#%s channel not found — cannot pin welcome message", WELCOME_CHANNEL)
+            return
+
+        pins = await channel.pins()
+        assert self.user is not None
+        already_pinned = any(m.author.id == self.user.id for m in pins)
+        if already_pinned:
+            log.info("#%s already has a pinned bot message — skipping", WELCOME_CHANNEL)
+            return
+
+        general_id = await _find_channel_id(guild, GENERAL_CHANNEL)
+        rules_id   = await _find_channel_id(guild, RULES_CHANNEL)
+        general_ref = f"<#{general_id}>" if general_id else "#general"
+        rules_ref   = f"<#{rules_id}>"   if rules_id   else "#rules"
+
+        message = (
+            "# Welcome to InjectBuddy 👋\n\n"
+            "You're in. This is the community for people running TRT, peptides, "
+            "and GLP-1 protocols — sharing dosing, bloodwork, and real-world results.\n\n"
+            f"Jump into {general_ref} to say hi, and read {rules_ref} while you're here."
+        )
+
+        msg = await channel.send(message)
+        await msg.pin(reason="welcome prompt")
+        log.info("Pinned welcome message in #%s", WELCOME_CHANNEL)
 
     # ── #verify pin ────────────────────────────────────────────────────────
 

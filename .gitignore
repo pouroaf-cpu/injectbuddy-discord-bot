@@ -39,3 +39,18 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Internal / agent docs — never commit (README.md is the only public doc)
+CLAUDE.md
+RULES.md
+CONVENTIONS.md
+CODEX*.md
+claude*.md
+*_TASK.md
+HANDOFF.md
+STATUS.md
+TASKS.md
+FILE_MAP.md
+AGENTS.md
+SESSION_LOG.md
+data/

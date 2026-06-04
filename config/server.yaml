@@ -32,7 +32,7 @@ categories:
     channels:
       - name: welcome
         type: text
-        topic: "Welcome to InjectBuddy. Read the rules, then head to #verify to unlock the server."
+        topic: "Welcome to InjectBuddy. Read the rules, then jump into the community."
         permissions:
           "@everyone":
             view_channel: true
@@ -48,15 +48,6 @@ categories:
             read_message_history: true
             send_messages: false
 
-      - name: verify
-        type: text
-        topic: "Click the verify button to link your InjectBuddy account and unlock the server."
-        permissions:
-          "@everyone":
-            view_channel: true
-            read_message_history: true
-            send_messages: false
-
   - name: "💬 COMMUNITY"
     position: 1
     channels:
@@ -65,8 +56,6 @@ categories:
         topic: "General chat. Keep it roughly on-topic."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -78,8 +67,6 @@ categories:
         topic: "Quick intro — where you're from, what you're working on."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -91,8 +78,6 @@ categories:
         topic: "Progress photos, bloodwork wins, PRs. Celebrate the work."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -107,8 +92,6 @@ categories:
         topic: "Testosterone replacement therapy — protocols, dosing, bloodwork."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -120,8 +103,6 @@ categories:
         topic: "BPC-157, TB-500, GHRPs — reconstitution, dosing, results."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -133,8 +114,6 @@ categories:
         topic: "Semaglutide, tirzepatide, retatrutide — dosing and experiences."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
@@ -149,8 +128,6 @@ categories:
         topic: "Site updates, new calculators, feature drops. Read-only for members."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: false
             read_message_history: true
@@ -164,8 +141,6 @@ categories:
         topic: "Calculator suggestions, bug reports, feature requests."
         permissions:
           "@everyone":
-            view_channel: false
-          Verified:
             view_channel: true
             send_messages: true
             read_message_history: true
